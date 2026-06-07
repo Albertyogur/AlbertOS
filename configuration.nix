@@ -86,7 +86,7 @@
     gh
     zoxide
     lazygit
-    mullvad-vpn
+    gnumake
   ];
 
   # ==================== 基础设置 ====================
