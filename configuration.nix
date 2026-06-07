@@ -48,11 +48,6 @@
     "x-scheme-handler/unknown" = "firefox.desktop";
   };
 
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-  };
-
   programs.nyancat.enable = false;
 
   # ==================== 中英文字体（已修正） ====================
