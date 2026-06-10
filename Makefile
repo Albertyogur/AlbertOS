@@ -1,4 +1,4 @@
-.PHONY: update boot private wsl wsltar
+.PHONY: update boot
 update:
 	git add .
 	nh os switch .

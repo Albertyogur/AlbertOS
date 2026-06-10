@@ -1,18 +1,33 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ 
+  imports = [
     ./hardware-configuration.nix
     ./nyancatmodule.nix
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
-  # ==================== Bootloader ====================
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.timeout = 3;
-  boot.loader.systemd-boot.configurationLimit = 3;
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+  nix.settings = {
+    substituters = [
+      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
+      "https://cache.nixos.org/"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    ];
+  };
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
+
+  hardware.enableAllFirmware = true;
 
   # ==================== Zenbook 显卡修复 ====================
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -50,38 +65,22 @@
 
   programs.nyancat.enable = false;
 
-  # ==================== 中英文字体（已修正） ====================
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-cjk-serif
-    noto-fonts-color-emoji      # ← 已修正
-    sarasa-gothic
-    jetbrains-mono
-    fira-code
-    nerd-fonts.fira-code
-    nerd-fonts.jetbrains-mono
-  ];
-
-  fonts.fontconfig.defaultFonts = {
-    serif = [ "Noto Serif CJK SC" ];
-    sansSerif = [ "Noto Sans CJK SC" "Sarasa Gothic SC" ];
-    monospace = [ "JetBrainsMono" "Sarasa Mono SC" ];
-    emoji = [ "Noto Color Emoji" ];
-  };
-
   # ==================== 常用软件 ====================
   environment.systemPackages = with pkgs; [
     firefox
     vscode
     git
-    clash-verge-rev 
+    clash-verge-rev
     yazi
     nh
     gh
     zoxide
     lazygit
     gnumake
+    inkscape
+    neovide
+    imv
+    vlc
   ];
 
   # ==================== 基础设置 ====================
@@ -93,8 +92,14 @@
 
   users.users.albert = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" "audio" "input" ];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "video"
+      "audio"
+      "input"
+    ];
   };
 
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.05";
 }
