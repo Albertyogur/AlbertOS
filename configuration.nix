@@ -10,15 +10,6 @@
     "nix-command"
     "flakes"
   ];
-  nix.settings = {
-    substituters = [
-      "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store"
-      "https://cache.nixos.org/"
-    ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-    ];
-  };
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -82,6 +73,19 @@
     imv
     vlc
   ];
+
+  # ==================== Orbbec Gemini 335Le 相机 ====================
+  services.orbbec-gemini335le = {
+    enable = true;
+    interface = "ens1";
+    hostAddress = "192.168.1.2";
+    prefixLength = 24;
+
+    profileName = "10G_RJ45"; # 你想要的连接名称
+    configureNetworkManager = true; # 让 NixOS 自动管理这个连接
+    trustFirewallInterface = true;
+    installViewer = true;
+  };
 
   # ==================== 基础设置 ====================
   networking.hostName = "zenbook-air";
